@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>延迟绑定机制+got表plt表 | Chen's blog</title><meta name="author" content="Jerry k,2183517231@qq.com"><meta name="copyright" content="Jerry k"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="转载，原文作者： 载酒 附址：https:&#x2F;&#x2F;github.com&#x2F;ctfer-zaijiu?tab&#x3D;stars 延迟绑定机制+got表plt表 也不必说，鸣蝉在树叶里长吟，肥胖的黄蜂伏在菜花上 🌾  .plt表和.got.plt表【定义】  got表思想就是设计一个got表用来存放所有全局符号地址，早在静态链接的设计中就有，其中实现上被实现为了以下两个表： 1、.got存放全局变量引用地址 2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="延迟绑定机制+got表plt表">
+<meta property="og:url" content="https://chhz20.github.io/2024/03/24/%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6+got%E8%A1%A8plt%E8%A1%A8/index.html">
+<meta property="og:site_name" content="Chen&#39;s blog">
+<meta property="og:description" content="转载，原文作者： 载酒 附址：https:&#x2F;&#x2F;github.com&#x2F;ctfer-zaijiu?tab&#x3D;stars 延迟绑定机制+got表plt表 也不必说，鸣蝉在树叶里长吟，肥胖的黄蜂伏在菜花上 🌾  .plt表和.got.plt表【定义】  got表思想就是设计一个got表用来存放所有全局符号地址，早在静态链接的设计中就有，其中实现上被实现为了以下两个表： 1、.got存放全局变量引用地址 2">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.postimg.cc/RVTr96fh/default.jpg">
+<meta property="article:published_time" content="2024-03-24T09:42:20.000Z">
+<meta property="article:modified_time" content="2024-03-24T09:48:57.417Z">
+<meta property="article:author" content="Jerry k">
+<meta property="article:tag" content="动态链接">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.postimg.cc/RVTr96fh/default.jpg"><link rel="shortcut icon" href="https://i.postimg.cc/g0334sGr/image.jpg"><link rel="canonical" href="https://chhz20.github.io/2024/03/24/%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6+got%E8%A1%A8plt%E8%A1%A8/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Jerry k","link":"链接: ","source":"来源: Chen's blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '延迟绑定机制+got表plt表',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-24 17:48:57'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.postimg.cc/RVTr96fh/default.jpg" onerror="onerror=null;src='null'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent"><nav id="nav"><span id="blog-info"><a href="/" title="Chen's blog"><span class="site-name">Chen's blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">延迟绑定机制+got表plt表</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-24T09:42:20.000Z" title="发表于 2024-03-24 17:42:20">2024-03-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-24T09:48:57.417Z" title="更新于 2024-03-24 17:48:57">2024-03-24</time></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><em><strong>转载，原文作者：</strong></em> <strong>载酒</strong></p>
+<p><em>附址：<a target="_blank" rel="noopener" href="https://github.com/ctfer-zaijiu?tab=stars">https://github.com/ctfer-zaijiu?tab=stars</a></em></p>
+<h1 id="延迟绑定机制-got表plt表"><a href="#延迟绑定机制-got表plt表" class="headerlink" title="延迟绑定机制+got表plt表"></a>延迟绑定机制+got表plt表</h1><blockquote>
+<p>也不必说，鸣蝉在树叶里长吟，肥胖的黄蜂伏在菜花上 🌾</p>
+</blockquote>
+<h1 id="plt表和-got-plt表"><a href="#plt表和-got-plt表" class="headerlink" title=".plt表和.got.plt表"></a>.plt表和.got.plt表</h1><p><strong>【定义】</strong> </p>
+<p>got表思想就是设计一个got表用来存放所有全局符号地址，早在静态链接的设计中就有，其中实现上被实现为了以下两个表：</p>
+<p>1、<code>.got</code>存放全局变量引用地址</p>
+<p>2、<code>.got.plt</code>存放函数引用地址</p>
+<p>为了实现延迟绑定机制，才在got表的基础上接入了plt表，其加入有2 个设计目标：</p>
+<p>1、实现第一次调用函数时会做重定位，而后第二次之后的所有函数调用就都是直接调用</p>
+<p>2、实现传参并调用_dl_runtime_resolve()</p>
+<p>这两个表被ld.so也就是动态链接器所维护，主要是：在ld.so里定义了一个_dl_runtime_resolve函数用来进行重定位+符号地址解析，并将结果更新在plt、got表中。</p>
+<p><strong>【结构】</strong></p>
+<p>plt表存储指令，got表存储指令要用到的 数据。他们都是：可复用的东西放表头，某函数独有的东西做表项。</p>
+<ul>
+<li><p><strong>plt表的结构如下：</strong></p>
+<ul>
+<li><p>表头是调用runtime_resorve函数的指令，每个函数在第一次用runtime_resorve函数进行“符号地址解析”时就对该段指令进行复用。</p>
+</li>
+<li><p>每个表项是以下三条指令：</p>
+<p>  1、jmp,用来跳到函数处，使用的地址存在got表表项。如果成功就直接调到函数，如果失败（符号地址未被解析）就跳到接下来的指令“2”“3”</p>
+<p>  2、push,用来给runtime_resorve函数传参，数据用立即数</p>
+<p>  3、jmp,跳回plt表头</p>
+</li>
+</ul>
+</li>
+<li><p><strong>got表的结构如下：</strong></p>
+<ul>
+<li>表头是三个特殊地址，是每个函数进行重定位时可以复用的调用runtime_resolve函数的数据，其中：<ul>
+<li>got[0]是.dymanic段的基址</li>
+<li>got[1]是一个指向linkmap结构体实现的指针，该结构体实现位于栈上</li>
+<li>got[2]是_dl_runtime_resolve函数的地址</li>
+</ul>
+</li>
+<li>每个表项都是一个地址指针，被重定位前指向plt表的对应字段的第二句指令开始处，被重定位后指向对应函数地址处</li>
+</ul>
+</li>
+</ul>
+<p><strong>总体结构如下图↓：</strong></p>
+<p><img src="/%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6+got%E8%A1%A8plt%E8%A1%A8%20ae7c73b97f92469ca5b3a903563e06ee/Untitled.png" alt="Untitled"></p>
+<p><strong>【位置】</strong></p>
+<p>这两个表是每个程序私有的，而不是可以多个程序之间共享的。</p>
+<p>也就是说，在不开ASLR的情况下，每一次运行elf程序时got表、plt表的基址是一样的！</p>
+<p>“got”表基址通常存放在特定的寄存器中，以便在程序执行时快速访问。具体来说，常见的做法是将”got”表基址存放在全局偏移表寄存器（Global Offset Table Register，通常简称为GOT寄存器）中。</p>
+<p>GOT寄存器的命名和具体寄存器编号会根据不同的体系结构和操作系统而有所不同。以下是一些常见架构和操作系统中使用的GOT寄存器示例：</p>
+<p>x86架构（32位）：</p>
+<ul>
+<li>在x86架构的Linux系统中，GOT寄存器通常是EBX（32位寄存器）。</li>
+</ul>
+<p>x86架构（64位）：</p>
+<ul>
+<li>在x86架构的Linux系统中，GOT寄存器通常是R12（64位寄存器）。</li>
+</ul>
+<p>ARM架构：</p>
+<ul>
+<li>在ARM架构中，GOT寄存器通常是R9（ARMv7架构）或X19（ARMv8架构）。</li>
+</ul>
+<p>MIPS架构：</p>
+<ul>
+<li>在MIPS架构中，GOT寄存器通常是GP（全局指针寄存器）。<br>需要注意的是，具体的寄存器使用可能会受到编译器、操作系统和编译选项的影响。因此，对于特定的平台和环境，可能会有一些变化。</li>
+</ul>
+<p><strong>【相关操作】</strong></p>
+<p>可以通过pwntools的以下指令来获得这两个表中某个函数的地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">elf = ELF(<span class="string">&quot;./pwntest&quot;</span>)</span><br><span class="line"></span><br><span class="line">read_plt = elf.plt[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line">read_got = elf.got[<span class="string">&#x27;read&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>可以通过objdump来查看一个elf的got表plt表中共有哪些函数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看文件的got表</span></span><br><span class="line">$ objdump -R pwn3</span><br><span class="line"><span class="comment">#查看文件的plt表</span></span><br><span class="line">$ objdump -dj .plt migration </span><br></pre></td></tr></table></figure>
+
+<h1 id="延迟绑定机制"><a href="#延迟绑定机制" class="headerlink" title="延迟绑定机制"></a>延迟绑定机制</h1><p><strong>【定义】</strong></p>
+<p>又叫lazybinding，其通过got表和plt表的联动，实现：</p>
+<p>第一次访问plt表时会执行run_time_resolve，第二次及以后访问plt表时就会自动跳转到函数代码，如图↓：</p>
+<p><img src="/%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6+got%E8%A1%A8plt%E8%A1%A8%20ae7c73b97f92469ca5b3a903563e06ee/Untitled%201.png" alt="Untitled"></p>
+<p>当函数第一次用到时才进行重定位获取位置，这样会大大提高程序启动速度</p>
+<p><strong>【实现过程】</strong></p>
+<p>第一次执行该对该func的call时的指令执行流程：</p>
+<p><img src="/%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6+got%E8%A1%A8plt%E8%A1%A8%20ae7c73b97f92469ca5b3a903563e06ee/Untitled%202.png" alt="执行完dl_runtime_resolve函数完成重定位后会返回call语句的前一句语句位置，然后再执行第2次对该func的call"></p>
+<p>执行完dl_runtime_resolve函数完成重定位后会返回call语句的前一句语句位置，然后再执行第2次对该func的call</p>
+<p>重定位完成后，第2、3、4…次执行对该func的call时的指令执行流程：</p>
+<p><img src="/%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6+got%E8%A1%A8plt%E8%A1%A8%20ae7c73b97f92469ca5b3a903563e06ee/Untitled%203.png" alt="Untitled"></p>
+<h1 id="不使用延迟绑定"><a href="#不使用延迟绑定" class="headerlink" title="不使用延迟绑定"></a>不使用延迟绑定</h1><p>1、在一些情况下，一个 GCC 编译的程序可能不会有 PLT 表。这通常是因为编译器或链接器在某些情况下会进行优化，例如，如果程序中没有对动态链接库函数的显式调用或者只有很少的动态链接库函数，那么编译器或链接器可能会选择不生成 PLT 表。</p>
+<p>2、在linux系统中使用使用FullRelro安全策略时，默认直接装载时全部重定位，此时也不会有plt表而只会有got表</p>
+<p>3、弱符号引用：当程序使用弱符号引用时，通常也不会使用延迟绑定。弱符号是一种特殊类型的符号引用，（举个栗子：在c&#x2F;c++语言中，编译器默认函数和已经初始化的全局变量为强符号，未初始化的全局变量为弱符号）其绑定是可选的（即弱引用），如果找不到符号的定义，程序可以继续执行（默认值为0或别的特殊值）。在这种情况下，通常会在程序启动时立即解析和绑定弱符号引用，以便在需要时进行正确的调用或访问。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Chhz20.github.io">Jerry k</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://chhz20.github.io/2024/03/24/%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6+got%E8%A1%A8plt%E8%A1%A8/">https://chhz20.github.io/2024/03/24/%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6+got%E8%A1%A8plt%E8%A1%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Chhz20.github.io" target="_blank">Chen's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5/">动态链接</a></div><div class="post_share"><div class="social-share" data-image="https://i.postimg.cc/RVTr96fh/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/03/20/Tips/" title="Tips"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Tips</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/03/18/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5/" title="动态链接相关"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-18</div><div class="title">动态链接相关</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.postimg.cc/RVTr96fh/default.jpg" onerror="this.onerror=null;this.src='/null'" alt="avatar"/></div><div class="author-info__name">Jerry k</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/C17zz"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Welcome</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6-got%E8%A1%A8plt%E8%A1%A8"><span class="toc-number">1.</span> <span class="toc-text">延迟绑定机制+got表plt表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#plt%E8%A1%A8%E5%92%8C-got-plt%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">.plt表和.got.plt表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6"><span class="toc-number">3.</span> <span class="toc-text">延迟绑定机制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8D%E4%BD%BF%E7%94%A8%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A"><span class="toc-number">4.</span> <span class="toc-text">不使用延迟绑定</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><div class="content"><a class="title" href="/2024/03/24/%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6+got%E8%A1%A8plt%E8%A1%A8/" title="延迟绑定机制+got表plt表">延迟绑定机制+got表plt表</a><time datetime="2024-03-24T09:42:20.000Z" title="发表于 2024-03-24 17:42:20">2024-03-24</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2024/03/20/Tips/" title="Tips">Tips</a><time datetime="2024-03-20T02:50:40.000Z" title="发表于 2024-03-20 10:50:40">2024-03-20</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2024/03/19/%E5%9F%BA%E6%9C%ACROP/" title="基本ROP">基本ROP</a><time datetime="2024-03-19T12:52:40.000Z" title="发表于 2024-03-19 20:52:40">2024-03-19</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2024/03/18/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5/" title="动态链接相关">动态链接相关</a><time datetime="2024-03-18T14:43:40.000Z" title="发表于 2024-03-18 22:43:40">2024-03-18</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2024/03/13/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="浅谈内存管理">浅谈内存管理</a><time datetime="2024-03-13T11:07:40.000Z" title="发表于 2024-03-13 19:07:40">2024-03-13</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Jerry k</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="true"></script></div></body></html>
