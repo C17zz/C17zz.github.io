@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.postimg.cc/RVTr96fh/default.jpg">
 <meta property="article:published_time" content="2024-03-24T09:42:20.000Z">
-<meta property="article:modified_time" content="2024-03-24T10:04:36.927Z">
+<meta property="article:modified_time" content="2024-03-25T11:53:25.118Z">
 <meta property="article:author" content="Jerry k">
 <meta property="article:tag" content="动态链接">
 <meta name="twitter:card" content="summary">
@@ -56,7 +56,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2024-03-24 18:04:36'
+  postUpdate: '2024-03-25 19:53:25'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -153,7 +153,7 @@
         }
       }
       detectApple()
-    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.postimg.cc/RVTr96fh/default.jpg" onerror="onerror=null;src='null'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent"><nav id="nav"><span id="blog-info"><a href="/" title="Chen's blog"><span class="site-name">Chen's blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">延迟绑定机制+got表plt表</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-24T09:42:20.000Z" title="发表于 2024-03-24 17:42:20">2024-03-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-24T10:04:36.927Z" title="更新于 2024-03-24 18:04:36">2024-03-24</time></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><em><strong>转载，原文作者：</strong></em> <strong>载酒</strong></p>
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.postimg.cc/RVTr96fh/default.jpg" onerror="onerror=null;src='null'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent"><nav id="nav"><span id="blog-info"><a href="/" title="Chen's blog"><span class="site-name">Chen's blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">延迟绑定机制+got表plt表</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-24T09:42:20.000Z" title="发表于 2024-03-24 17:42:20">2024-03-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-25T11:53:25.118Z" title="更新于 2024-03-25 19:53:25">2024-03-25</time></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><em><strong>转载，原文作者：</strong></em> <strong>载酒</strong></p>
 <p><em>附址：<a target="_blank" rel="noopener" href="https://github.com/ctfer-zaijiu?tab=stars">https://github.com/ctfer-zaijiu?tab=stars</a></em></p>
 <h1 id="延迟绑定机制-got表plt表"><a href="#延迟绑定机制-got表plt表" class="headerlink" title="延迟绑定机制+got表plt表"></a>延迟绑定机制+got表plt表</h1><blockquote>
 <p>也不必说，鸣蝉在树叶里长吟，肥胖的黄蜂伏在菜花上 🌾</p>
@@ -196,7 +196,7 @@
 <p><img src="https://gateway.pinata.cloud/ipfs/bafkreihsuwn4yezxio5buc27wd6ncxz7atafjz44lrxgjw233qhqafi7vi" alt="Untitled"></p>
 <p><strong>【位置】</strong></p>
 <p>这两个表是每个程序私有的，而不是可以多个程序之间共享的。</p>
-<p>也就是说，在不开ASLR的情况下，每一次运行elf程序时got表、plt表的基址是一样的！</p>
+<p>也就是说，在不开ASLR的情况下，每一次运行elf程序时got表、plt表的基址的后12位是一样的！</p>
 <p>“got”表基址通常存放在特定的寄存器中，以便在程序执行时快速访问。具体来说，常见的做法是将”got”表基址存放在全局偏移表寄存器（Global Offset Table Register，通常简称为GOT寄存器）中。</p>
 <p>GOT寄存器的命名和具体寄存器编号会根据不同的体系结构和操作系统而有所不同。以下是一些常见架构和操作系统中使用的GOT寄存器示例：</p>
 <p>x86架构（32位）：</p>
