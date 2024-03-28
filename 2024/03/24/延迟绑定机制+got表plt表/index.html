@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>延迟绑定机制+got表plt表 | Chen's blog</title><meta name="author" content="Jerry k,2183517231@qq.com"><meta name="copyright" content="Jerry k"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="转载，原文作者： 载酒 附址：https:&#x2F;&#x2F;github.com&#x2F;ctfer-zaijiu?tab&#x3D;stars 延迟绑定机制+got表plt表 也不必说，鸣蝉在树叶里长吟，肥胖的黄蜂伏在菜花上 🌾  .plt表和.got.plt表【定义】  got表思想就是设计一个got表用来存放所有全局符号地址，早在静态链接的设计中就有，其中实现上被实现为了以下两个表： 1、.got存放全局变量引用地址 2">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>延迟绑定机制+got表plt表 | Chen's blog</title><meta name="author" content="Jerry k,2183517231@qq.com"><meta name="copyright" content="Jerry k"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="转载，原文作者： 载酒 附址：https:&#x2F;&#x2F;github.com&#x2F;ctfer-zaijiu?tab&#x3D;stars 仅供个人学习参考">
 <meta property="og:type" content="article">
 <meta property="og:title" content="延迟绑定机制+got表plt表">
 <meta property="og:url" content="https://chhz20.github.io/2024/03/24/%E5%BB%B6%E8%BF%9F%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6+got%E8%A1%A8plt%E8%A1%A8/index.html">
 <meta property="og:site_name" content="Chen&#39;s blog">
-<meta property="og:description" content="转载，原文作者： 载酒 附址：https:&#x2F;&#x2F;github.com&#x2F;ctfer-zaijiu?tab&#x3D;stars 延迟绑定机制+got表plt表 也不必说，鸣蝉在树叶里长吟，肥胖的黄蜂伏在菜花上 🌾  .plt表和.got.plt表【定义】  got表思想就是设计一个got表用来存放所有全局符号地址，早在静态链接的设计中就有，其中实现上被实现为了以下两个表： 1、.got存放全局变量引用地址 2">
+<meta property="og:description" content="转载，原文作者： 载酒 附址：https:&#x2F;&#x2F;github.com&#x2F;ctfer-zaijiu?tab&#x3D;stars 仅供个人学习参考">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.postimg.cc/RVTr96fh/default.jpg">
 <meta property="article:published_time" content="2024-03-24T09:42:20.000Z">
-<meta property="article:modified_time" content="2024-03-25T11:53:25.118Z">
+<meta property="article:modified_time" content="2024-03-28T11:27:00.807Z">
 <meta property="article:author" content="Jerry k">
 <meta property="article:tag" content="动态链接">
 <meta name="twitter:card" content="summary">
@@ -56,7 +56,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2024-03-25 19:53:25'
+  postUpdate: '2024-03-28 19:27:00'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -153,8 +153,11 @@
         }
       }
       detectApple()
-    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.postimg.cc/RVTr96fh/default.jpg" onerror="onerror=null;src='null'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent"><nav id="nav"><span id="blog-info"><a href="/" title="Chen's blog"><span class="site-name">Chen's blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">延迟绑定机制+got表plt表</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-24T09:42:20.000Z" title="发表于 2024-03-24 17:42:20">2024-03-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-25T11:53:25.118Z" title="更新于 2024-03-25 19:53:25">2024-03-25</time></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><em><strong>转载，原文作者：</strong></em> <strong>载酒</strong></p>
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.postimg.cc/RVTr96fh/default.jpg" onerror="onerror=null;src='null'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent"><nav id="nav"><span id="blog-info"><a href="/" title="Chen's blog"><span class="site-name">Chen's blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">延迟绑定机制+got表plt表</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-24T09:42:20.000Z" title="发表于 2024-03-24 17:42:20">2024-03-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-28T11:27:00.807Z" title="更新于 2024-03-28 19:27:00">2024-03-28</time></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><em><strong>转载，原文作者：</strong></em> <strong>载酒</strong></p>
 <p><em>附址：<a target="_blank" rel="noopener" href="https://github.com/ctfer-zaijiu?tab=stars">https://github.com/ctfer-zaijiu?tab=stars</a></em></p>
+<p><em>仅供个人学习参考</em>  </p>
+<span id="more"></span>
+
 <h1 id="延迟绑定机制-got表plt表"><a href="#延迟绑定机制-got表plt表" class="headerlink" title="延迟绑定机制+got表plt表"></a>延迟绑定机制+got表plt表</h1><blockquote>
 <p>也不必说，鸣蝉在树叶里长吟，肥胖的黄蜂伏在菜花上 🌾</p>
 </blockquote>

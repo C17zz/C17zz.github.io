@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>格式化字符串漏洞 | Chen's blog</title><meta name="author" content="Jerry k,2183517231@qq.com"><meta name="copyright" content="Jerry k"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="格式化字符串漏洞原理漏洞来自c语言的printf函数，因为printf函数不会检查参数的个数与格式化字符串的个数是否对应，也就是说，只要有格式化参数在，即使我们没有往printf函数传去参数，它也会默认在栈上向后（向高地址）寻找对应参数并根据格式化字符串来解析，举个栗子 1prinf(&quot;%s%s%s&quot;);  我们虽然没有给printf传参，但它依旧会把后面地址（高地址）上的内容">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>格式化字符串漏洞 | Chen's blog</title><meta name="author" content="Jerry k,2183517231@qq.com"><meta name="copyright" content="Jerry k"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="仅供个人学习参考">
 <meta property="og:type" content="article">
 <meta property="og:title" content="格式化字符串漏洞">
 <meta property="og:url" content="https://chhz20.github.io/2024/03/26/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E/index.html">
 <meta property="og:site_name" content="Chen&#39;s blog">
-<meta property="og:description" content="格式化字符串漏洞原理漏洞来自c语言的printf函数，因为printf函数不会检查参数的个数与格式化字符串的个数是否对应，也就是说，只要有格式化参数在，即使我们没有往printf函数传去参数，它也会默认在栈上向后（向高地址）寻找对应参数并根据格式化字符串来解析，举个栗子 1prinf(&quot;%s%s%s&quot;);  我们虽然没有给printf传参，但它依旧会把后面地址（高地址）上的内容">
+<meta property="og:description" content="仅供个人学习参考">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.postimg.cc/RVTr96fh/default.jpg">
 <meta property="article:published_time" content="2024-03-26T11:54:40.000Z">
-<meta property="article:modified_time" content="2024-03-26T11:54:51.717Z">
+<meta property="article:modified_time" content="2024-03-28T11:26:21.219Z">
 <meta property="article:author" content="Jerry k">
 <meta property="article:tag" content="格式化字符串漏洞">
 <meta name="twitter:card" content="summary">
@@ -56,7 +56,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2024-03-26 19:54:51'
+  postUpdate: '2024-03-28 19:26:21'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -153,7 +153,10 @@
         }
       }
       detectApple()
-    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.postimg.cc/RVTr96fh/default.jpg" onerror="onerror=null;src='null'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent"><nav id="nav"><span id="blog-info"><a href="/" title="Chen's blog"><span class="site-name">Chen's blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">格式化字符串漏洞</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-26T11:54:40.000Z" title="发表于 2024-03-26 19:54:40">2024-03-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-26T11:54:51.717Z" title="更新于 2024-03-26 19:54:51">2024-03-26</time></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="格式化字符串漏洞原理"><a href="#格式化字符串漏洞原理" class="headerlink" title="格式化字符串漏洞原理"></a>格式化字符串漏洞原理</h2><p>漏洞来自c语言的printf函数，因为printf函数不会检查参数的个数与格式化字符串的个数是否对应，也就是说，只要有格式化参数在，即使我们没有往printf函数传去参数，它也会默认在栈上向后（向高地址）寻找对应参数并根据格式化字符串来解析，举个栗子</p>
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.postimg.cc/RVTr96fh/default.jpg" onerror="onerror=null;src='null'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent"><nav id="nav"><span id="blog-info"><a href="/" title="Chen's blog"><span class="site-name">Chen's blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">格式化字符串漏洞</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-26T11:54:40.000Z" title="发表于 2024-03-26 19:54:40">2024-03-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-28T11:26:21.219Z" title="更新于 2024-03-28 19:26:21">2024-03-28</time></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><em>仅供个人学习参考</em>  </p>
+<span id="more"></span>
+
+<h2 id="格式化字符串漏洞原理"><a href="#格式化字符串漏洞原理" class="headerlink" title="格式化字符串漏洞原理"></a>格式化字符串漏洞原理</h2><p>漏洞来自c语言的printf函数，因为printf函数不会检查参数的个数与格式化字符串的个数是否对应，也就是说，只要有格式化参数在，即使我们没有往printf函数传去参数，它也会默认在栈上向后（向高地址）寻找对应参数并根据格式化字符串来解析，举个栗子</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">prinf(<span class="string">&quot;%s%s%s&quot;</span>);</span><br></pre></td></tr></table></figure>
 
 <p>我们虽然没有给printf传参，但它依旧会把后面地址（高地址）上的内容作为参数来使用，栈的情况如下图</p>
