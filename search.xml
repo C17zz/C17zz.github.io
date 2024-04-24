@@ -28,6 +28,50 @@
       </tags>
   </entry>
   <entry>
+    <title>VScode远程连接虚拟机以及免密登录</title>
+    <url>/2024/04/16/VScode%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BB%A5%E5%8F%8A%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95/</url>
+    <content><![CDATA[<p><em>仅供个人学习参考</em>  </p>
+<span id="more"></span>
+
+<h2 id="一、安装VScode扩展"><a href="#一、安装VScode扩展" class="headerlink" title="一、安装VScode扩展"></a>一、安装VScode扩展</h2><p>这两个都可以<br><img src="https://gateway.pinata.cloud/ipfs/bafkreib3kvikh2y4ts6a6vzaqy6aouor7prjrxgy4t7kmpby7h3fe6ddli" alt="0"></p>
+<p><em>Remote SSH 扩展：Remote SSH 扩展允许你通过 SSH 连接到远程计算机，并在本地的 VSCode 编辑器中进行编辑和调试。你可以使用该扩展连接到远程服务器、虚拟机或容器，并在远程主机上执行命令和调试任务。Remote SSH 扩展适用于那些希望在远程计算机上进行开发和调试的场景。它提供了与远程主机的基本交互和编辑功能。</em></p>
+<p><em>Remote Development 扩展：Remote Development 扩展是一个更加综合的扩展，它提供了比 Remote SSH 更广泛的远程开发功能。Remote Development 扩展支持多种远程连接协议，包括 SSH、容器、WSL（Windows Subsystem for Linux）等。它不仅可以通过 SSH 连接到远程主机，还可以在本地开发环境中使用容器，或者通过 WSL 在 Windows 上进行 Linux 开发。Remote Development 扩展还提供了一些其他功能，例如远程容器的自动同步、远程环境的访问控制等。</em></p>
+<h2 id="二、虚拟机方面"><a href="#二、虚拟机方面" class="headerlink" title="二、虚拟机方面"></a>二、虚拟机方面</h2><p><strong>1.安装ssh服务</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo apt install openssh-server -y</span><br><span class="line">ps -e | grep sshd   //检查是否正常安装</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.查找ip</strong></p>
+<p>这两个指令都行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ip addr</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gateway.pinata.cloud/ipfs/bafkreiatdhwek43wsar3e4pfdrin7tt4enyyb45tv3kmo6x7pblcbfbtli" alt="0"></p>
+<p>我们需要的是红色这部分（本地地址）（如果有斜杠，斜杠后面的数字不需要），这个是本地地址 （绿色的是广播地址）</p>
+<h2 id="三、使用VScode远程连接"><a href="#三、使用VScode远程连接" class="headerlink" title="三、使用VScode远程连接"></a>三、使用VScode远程连接</h2><p><img src="https://gateway.pinata.cloud/ipfs/bafybeie7c47mzqmejdxlsf326bfhjcbhrs4itpg6aznlop3wo3ocehedny" alt="0"></p>
+<p><img src="https://gateway.pinata.cloud/ipfs/bafkreihiehwbkl6fqfx22xtkn767wwad24gfnijzg4fustl46vlcnhgrwy" alt="0"></p>
+<p>按照它给的格式输入<br>即 </p>
+<blockquote>
+<p>ssh 用户名@本地地址</p>
+</blockquote>
+<p><img src="https://gateway.pinata.cloud/ipfs/bafkreigtaxmhlnfuxg3epwad5urlpipm2hx4leaiemp5sfgfoagvjxe6om" alt="0"></p>
+<p>上面的默认选项就行</p>
+<p>然后就ok了，接下来重复上面的操作，然后选择刚刚添加的host就能连接了</p>
+<p><img src="https://gateway.pinata.cloud/ipfs/bafkreifcuar4jdaeqjojlrolrct3bhas7vdi3oba4cefkmuxvxv6ti7p3a" alt="0"><br>虚拟机是Linux系统就选Linux</p>
+<p>然后输个虚拟机密码就行</p>
+<h2 id="免密登录"><a href="#免密登录" class="headerlink" title="免密登录"></a>免密登录</h2><p>在windows的命令窗口输入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh-keygen</span><br></pre></td></tr></table></figure>
+
+<p>enter三次确认生成公钥</p>
+<p>到目录C:\Users\用户名.ssh查看公钥<br>记事本打开id_rsa.pub ，复制里面全部内容</p>
+<p>转到虚拟机</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls -a  // 查看有没有.ssh文件，没有就执行下一条命令，生成一个</span><br><span class="line">mkdir .ssh</span><br><span class="line">vim ~/.ssh/authorized_keys  //打开后把刚刚复制的公钥粘贴进去然后保存</span><br></pre></td></tr></table></figure>
+
+<p><em>如果是手动创建的.ssh目录和authorized_keys文件，需要将其权限分别修改为700和600</em></p>
+]]></content>
+      <tags>
+        <tag>VScode</tag>
+        <tag>ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>pwn-environment</title>
     <url>/2024/04/15/pwn-environment/</url>
     <content><![CDATA[<p><em>仅供个人学习参考</em>  </p>
@@ -78,52 +122,8 @@
 
 <h2 id="安装one-gadget"><a href="#安装one-gadget" class="headerlink" title="安装one_gadget"></a>安装one_gadget</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 更新并安装依赖</span><br><span class="line">sudo apt update &amp;&amp; apt -y ruby ruby-dev</span><br><span class="line"># 安装one_gadget</span><br><span class="line">sudo gem install one_gadget</span><br></pre></td></tr></table></figure>]]></content>
       <tags>
+        <tag>ubuntu</tag>
         <tag>pwn</tag>
-        <tag>ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>VScode远程连接虚拟机以及免密登录</title>
-    <url>/2024/04/16/VScode%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BB%A5%E5%8F%8A%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95/</url>
-    <content><![CDATA[<p><em>仅供个人学习参考</em>  </p>
-<span id="more"></span>
-
-<h2 id="一、安装VScode扩展"><a href="#一、安装VScode扩展" class="headerlink" title="一、安装VScode扩展"></a>一、安装VScode扩展</h2><p>这两个都可以<br><img src="https://gateway.pinata.cloud/ipfs/bafkreib3kvikh2y4ts6a6vzaqy6aouor7prjrxgy4t7kmpby7h3fe6ddli" alt="0"></p>
-<p><em>Remote SSH 扩展：Remote SSH 扩展允许你通过 SSH 连接到远程计算机，并在本地的 VSCode 编辑器中进行编辑和调试。你可以使用该扩展连接到远程服务器、虚拟机或容器，并在远程主机上执行命令和调试任务。Remote SSH 扩展适用于那些希望在远程计算机上进行开发和调试的场景。它提供了与远程主机的基本交互和编辑功能。</em></p>
-<p><em>Remote Development 扩展：Remote Development 扩展是一个更加综合的扩展，它提供了比 Remote SSH 更广泛的远程开发功能。Remote Development 扩展支持多种远程连接协议，包括 SSH、容器、WSL（Windows Subsystem for Linux）等。它不仅可以通过 SSH 连接到远程主机，还可以在本地开发环境中使用容器，或者通过 WSL 在 Windows 上进行 Linux 开发。Remote Development 扩展还提供了一些其他功能，例如远程容器的自动同步、远程环境的访问控制等。</em></p>
-<h2 id="二、虚拟机方面"><a href="#二、虚拟机方面" class="headerlink" title="二、虚拟机方面"></a>二、虚拟机方面</h2><p><strong>1.安装ssh服务</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo apt install openssh-server -y</span><br><span class="line">ps -e | grep sshd   //检查是否正常安装</span><br></pre></td></tr></table></figure>
-
-<p><strong>2.查找ip</strong></p>
-<p>这两个指令都行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ip addr</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://gateway.pinata.cloud/ipfs/bafkreiatdhwek43wsar3e4pfdrin7tt4enyyb45tv3kmo6x7pblcbfbtli" alt="0"></p>
-<p>我们需要的是红色这部分（本地地址）（如果有斜杠，斜杠后面的数字不需要），这个是本地地址 （绿色的是广播地址）</p>
-<h2 id="三、使用VScode远程连接"><a href="#三、使用VScode远程连接" class="headerlink" title="三、使用VScode远程连接"></a>三、使用VScode远程连接</h2><p><img src="https://gateway.pinata.cloud/ipfs/bafybeie7c47mzqmejdxlsf326bfhjcbhrs4itpg6aznlop3wo3ocehedny" alt="0"></p>
-<p><img src="https://gateway.pinata.cloud/ipfs/bafkreihiehwbkl6fqfx22xtkn767wwad24gfnijzg4fustl46vlcnhgrwy" alt="0"></p>
-<p>按照它给的格式输入<br>即 </p>
-<blockquote>
-<p>ssh 用户名@本地地址</p>
-</blockquote>
-<p><img src="https://gateway.pinata.cloud/ipfs/bafkreigtaxmhlnfuxg3epwad5urlpipm2hx4leaiemp5sfgfoagvjxe6om" alt="0"></p>
-<p>上面的默认选项就行</p>
-<p>然后就ok了，接下来重复上面的操作，然后选择刚刚添加的host就能连接了</p>
-<p><img src="https://gateway.pinata.cloud/ipfs/bafkreifcuar4jdaeqjojlrolrct3bhas7vdi3oba4cefkmuxvxv6ti7p3a" alt="0"><br>虚拟机是Linux系统就选Linux</p>
-<p>然后输个虚拟机密码就行</p>
-<h2 id="免密登录"><a href="#免密登录" class="headerlink" title="免密登录"></a>免密登录</h2><p>在windows的命令窗口输入</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh-keygen</span><br></pre></td></tr></table></figure>
-
-<p>enter三次确认生成公钥</p>
-<p>到目录C:\Users\用户名.ssh查看公钥<br>记事本打开id_rsa.pub ，复制里面全部内容</p>
-<p>转到虚拟机</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls -a  // 查看有没有.ssh文件，没有就执行下一条命令，生成一个</span><br><span class="line">mkdir .ssh</span><br><span class="line">vim ~/.ssh/authorized_keys  //打开后把刚刚复制的公钥粘贴进去然后保存</span><br></pre></td></tr></table></figure>
-
-<p><em>如果是手动创建的.ssh目录和authorized_keys文件，需要将其权限分别修改为700和600</em></p>
-]]></content>
-      <tags>
-        <tag>ubuntu</tag>
-        <tag>VScode</tag>
       </tags>
   </entry>
   <entry>
@@ -211,25 +211,6 @@ syscall
       </tags>
   </entry>
   <entry>
-    <title>动态链接相关</title>
-    <url>/2024/03/18/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5/</url>
-    <content><![CDATA[<p><em>仅供个人学习参考</em>  </p>
-<span id="more"></span>
-
-<h2 id="为什么要动态链接-动态链接基本思想"><a href="#为什么要动态链接-动态链接基本思想" class="headerlink" title="为什么要动态链接&amp;&amp;动态链接基本思想"></a>为什么要动态链接&amp;&amp;动态链接基本思想</h2><p>&emsp;&emsp;静态链接对于计算机内存和磁盘空间的浪费十分严重，且一旦程序中有任何模块更新，整个程序就需要重新链接后再发布给用户，用户每次都需要重新下载这个程序<del>试想一下每次崩铁更新都要重新下载几十个G的文件那得多崩溃</del>动态链接很好的优化了以上两个问题。<br>&emsp;&emsp;其基本思想如下：把程序的各个模块分割成独立的文件，等到程序要运行时再将他们链接在一起，也就是将链接过程推迟。假设我们有program1.o、program2.o和lib.o三个目标文件。program1.o用到了lib.o，即program1.o依赖于lib.o，那么系统就会加载lib.o，如果他们还依赖于其他目标文件，那操作系统就再加载用到的文件，之后再进行链接工作，之后我们如果还需运行program2，系统只需加载program2，因为内存中已经存在一份lib.o<br>&emsp;&emsp;在Linux系统中，elf动态链接文件被称为<strong>动态共享对象</strong>（DSO，Dynamic Shared Objects），简称<strong>共享对象</strong>，一般以.so为扩展名。在Windows系统中则以.dll为扩展名（动态链接库）</p>
-<h2 id="地址无关代码-PIC"><a href="#地址无关代码-PIC" class="headerlink" title="地址无关代码 (PIC)"></a>地址无关代码 (PIC)</h2><p>&emsp;&emsp;共享对象的最终装载地址在编译时是不确定的，那么我们如何确定它在进程虚拟空间中的位置？早期人们采用静态共享库，即手工分配各个模块的装载地址，但是单一个模块被多个程序使用，就容易导致地址冲突。比如模块a被一个人分配到0x1000到0x2000的位置，但是另外一个人用不到a，以为0x1000到0x2000是空闲的，就把b分配进去，这样就起冲突了，以后的人就不能同时使用a和b。<br>&emsp;&emsp;为了解决模块装载时固定地址的问题，我们提出一个设想：共享对象在编译时不能假设自己在进程虚拟空间中的位置。首先想到的方法就是类比静态链接中的重定位，只不过我们将重定位推迟至装载时进行，即<strong>装载时重定位</strong>，又叫<strong>基址重置</strong>。但该方法有个很大的缺点是指令部分无法在多个进程之间共享，这样便失去了动态链接的一大优势。我们的目标是希望指令共享的部分不需要因为装载地址的改变而改变，所以我们将指令部分中需要修改的部分分离出来，与数据部分合并，这样剩余部分可保持不变，而数据部分可以在每个进程中拥有一个副本，这种方法是被称为<strong>地址无关代码</strong>的技术。<br>模块中地址引用方式可分为四种</p>
-<h3 id="类型一-模块内部调用或跳转"><a href="#类型一-模块内部调用或跳转" class="headerlink" title="类型一 模块内部调用或跳转"></a>类型一 模块内部调用或跳转</h3><p>被调函数与调用者都处于同一模块，这种指令不需要重定位，相对地址调用就可以了</p>
-<h3 id="类型二-模块内部数据访问-（比如模块中定义的全局变量、静态变量）"><a href="#类型二-模块内部数据访问-（比如模块中定义的全局变量、静态变量）" class="headerlink" title="类型二 模块内部数据访问 （比如模块中定义的全局变量、静态变量）"></a>类型二 模块内部数据访问 （比如模块中定义的全局变量、静态变量）</h3><p>相对寻址，任何一条指令与它所需要访问的模块的数据之间的相对位置是固定的，只要当前指令地址（pc）加上偏移量就能得出数据地址了</p>
-<h3 id="模块三-模块间数据访问"><a href="#模块三-模块间数据访问" class="headerlink" title="模块三 模块间数据访问"></a>模块三 模块间数据访问</h3><p>这个麻烦点，因为模块间的数据访问目标地址需要等到装载时才决定。elf文件的做法是在数据段内建立一个指向这些变量的指针数组，也称为<strong>全局偏移表</strong>（GOT表），当代码需要引用这些全局变量时，可以通过GOT表中相对应的项来间接引用。<br><img src="https://gateway.pinata.cloud/ipfs/bafkreihcypprhe7hi2662na3wquk27cjoa72yhvuxydholilndilk37pai" alt="got"><br>计算方式：通过pc值加上一个偏移量得到GOT表的位置，再根据变量地址在GOT表中的偏移就可以得到变量的地址</p>
-<h3 id="模块四-模块间调用、跳转-（比如其他模块定义的全局变量）"><a href="#模块四-模块间调用、跳转-（比如其他模块定义的全局变量）" class="headerlink" title="模块四 模块间调用、跳转 （比如其他模块定义的全局变量）"></a>模块四 模块间调用、跳转 （比如其他模块定义的全局变量）</h3><p>同三，就是把变量地址换成函数地址</p>
-<h2 id="PIE"><a href="#PIE" class="headerlink" title="PIE"></a>PIE</h2><p>以地址无关方式编码的可执行文件被称为地址无关可执行文件（PIE）</p>
-<h2 id="延迟绑定"><a href="#延迟绑定" class="headerlink" title="延迟绑定"></a>延迟绑定</h2><p>&emsp;&emsp;在动态链接下，程序模块之间包含了大量的函数调用，所以程序在开始执行前，动态链接会耗费不少时间用于解决模块之间的函数引用的符号查找和重定位，这会牺牲性能。而很多函数在实际运行中很少甚至不会用到，为了提高性能，ELF采用了一种叫做<strong>延迟绑定</strong>的机制。其基本思想就是程序在第一次被用到时才绑定（符号查找、重定位等）<br>&emsp;&emsp;ELF采用PLT（Procedure Linkage Table）的方法来实现。<br><img src="https://gateway.pinata.cloud/ipfs/bafkreif23cst3rfzw36mj7h3wptjifuvgztz4gx5ccjbvkenajvcrnjule" alt="plt"><br>如图，调用函数的方式在got表的基础上再加一层，先通过plt表查询函数在got表对应的项的地址，再通过got表进行间接寻址，如果是第一次调用函数，got表是没有函数地址的，需要plt表去绑定该函数（其中需要用到plt表中的前三个参数），之后got表就有对应函数的地址了。</p>
-]]></content>
-      <tags>
-        <tag>动态链接</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>基本ROP</title>
     <url>/2024/03/19/%E5%9F%BA%E6%9C%ACROP/</url>
     <content><![CDATA[<p><em>仅供个人学习参考</em>  </p>
@@ -279,6 +260,18 @@ syscall
 ]]></content>
       <tags>
         <tag>ROP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>堆相关</title>
+    <url>/2024/03/19/%E5%A0%86%E7%9B%B8%E5%85%B3/</url>
+    <content><![CDATA[<p><em>仅供个人学习参考</em>  </p>
+<span id="more"></span>
+
+<p><img src="https://gateway.pinata.cloud/ipfs/bafkreibceromkvwouskhvxcvhbmiut75yhftpwm7xhty5j7ruwqbngfeuu" alt="0"></p>
+]]></content>
+      <tags>
+        <tag>堆</tag>
       </tags>
   </entry>
   <entry>
@@ -376,15 +369,22 @@ syscall
       </tags>
   </entry>
   <entry>
-    <title>堆相关</title>
-    <url>/2024/03/19/%E5%A0%86%E7%9B%B8%E5%85%B3/</url>
+    <title>动态链接相关</title>
+    <url>/2024/03/18/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5/</url>
     <content><![CDATA[<p><em>仅供个人学习参考</em>  </p>
 <span id="more"></span>
 
-<p><img src="https://gateway.pinata.cloud/ipfs/bafkreibceromkvwouskhvxcvhbmiut75yhftpwm7xhty5j7ruwqbngfeuu" alt="0"></p>
+<h2 id="为什么要动态链接-动态链接基本思想"><a href="#为什么要动态链接-动态链接基本思想" class="headerlink" title="为什么要动态链接&amp;&amp;动态链接基本思想"></a>为什么要动态链接&amp;&amp;动态链接基本思想</h2><p>&emsp;&emsp;静态链接对于计算机内存和磁盘空间的浪费十分严重，且一旦程序中有任何模块更新，整个程序就需要重新链接后再发布给用户，用户每次都需要重新下载这个程序<del>试想一下每次崩铁更新都要重新下载几十个G的文件那得多崩溃</del>动态链接很好的优化了以上两个问题。<br>&emsp;&emsp;其基本思想如下：把程序的各个模块分割成独立的文件，等到程序要运行时再将他们链接在一起，也就是将链接过程推迟。假设我们有program1.o、program2.o和lib.o三个目标文件。program1.o用到了lib.o，即program1.o依赖于lib.o，那么系统就会加载lib.o，如果他们还依赖于其他目标文件，那操作系统就再加载用到的文件，之后再进行链接工作，之后我们如果还需运行program2，系统只需加载program2，因为内存中已经存在一份lib.o<br>&emsp;&emsp;在Linux系统中，elf动态链接文件被称为<strong>动态共享对象</strong>（DSO，Dynamic Shared Objects），简称<strong>共享对象</strong>，一般以.so为扩展名。在Windows系统中则以.dll为扩展名（动态链接库）</p>
+<h2 id="地址无关代码-PIC"><a href="#地址无关代码-PIC" class="headerlink" title="地址无关代码 (PIC)"></a>地址无关代码 (PIC)</h2><p>&emsp;&emsp;共享对象的最终装载地址在编译时是不确定的，那么我们如何确定它在进程虚拟空间中的位置？早期人们采用静态共享库，即手工分配各个模块的装载地址，但是单一个模块被多个程序使用，就容易导致地址冲突。比如模块a被一个人分配到0x1000到0x2000的位置，但是另外一个人用不到a，以为0x1000到0x2000是空闲的，就把b分配进去，这样就起冲突了，以后的人就不能同时使用a和b。<br>&emsp;&emsp;为了解决模块装载时固定地址的问题，我们提出一个设想：共享对象在编译时不能假设自己在进程虚拟空间中的位置。首先想到的方法就是类比静态链接中的重定位，只不过我们将重定位推迟至装载时进行，即<strong>装载时重定位</strong>，又叫<strong>基址重置</strong>。但该方法有个很大的缺点是指令部分无法在多个进程之间共享，这样便失去了动态链接的一大优势。我们的目标是希望指令共享的部分不需要因为装载地址的改变而改变，所以我们将指令部分中需要修改的部分分离出来，与数据部分合并，这样剩余部分可保持不变，而数据部分可以在每个进程中拥有一个副本，这种方法是被称为<strong>地址无关代码</strong>的技术。<br>模块中地址引用方式可分为四种</p>
+<h3 id="类型一-模块内部调用或跳转"><a href="#类型一-模块内部调用或跳转" class="headerlink" title="类型一 模块内部调用或跳转"></a>类型一 模块内部调用或跳转</h3><p>被调函数与调用者都处于同一模块，这种指令不需要重定位，相对地址调用就可以了</p>
+<h3 id="类型二-模块内部数据访问-（比如模块中定义的全局变量、静态变量）"><a href="#类型二-模块内部数据访问-（比如模块中定义的全局变量、静态变量）" class="headerlink" title="类型二 模块内部数据访问 （比如模块中定义的全局变量、静态变量）"></a>类型二 模块内部数据访问 （比如模块中定义的全局变量、静态变量）</h3><p>相对寻址，任何一条指令与它所需要访问的模块的数据之间的相对位置是固定的，只要当前指令地址（pc）加上偏移量就能得出数据地址了</p>
+<h3 id="模块三-模块间数据访问"><a href="#模块三-模块间数据访问" class="headerlink" title="模块三 模块间数据访问"></a>模块三 模块间数据访问</h3><p>这个麻烦点，因为模块间的数据访问目标地址需要等到装载时才决定。elf文件的做法是在数据段内建立一个指向这些变量的指针数组，也称为<strong>全局偏移表</strong>（GOT表），当代码需要引用这些全局变量时，可以通过GOT表中相对应的项来间接引用。<br><img src="https://gateway.pinata.cloud/ipfs/bafkreihcypprhe7hi2662na3wquk27cjoa72yhvuxydholilndilk37pai" alt="got"><br>计算方式：通过pc值加上一个偏移量得到GOT表的位置，再根据变量地址在GOT表中的偏移就可以得到变量的地址</p>
+<h3 id="模块四-模块间调用、跳转-（比如其他模块定义的全局变量）"><a href="#模块四-模块间调用、跳转-（比如其他模块定义的全局变量）" class="headerlink" title="模块四 模块间调用、跳转 （比如其他模块定义的全局变量）"></a>模块四 模块间调用、跳转 （比如其他模块定义的全局变量）</h3><p>同三，就是把变量地址换成函数地址</p>
+<h2 id="PIE"><a href="#PIE" class="headerlink" title="PIE"></a>PIE</h2><p>以地址无关方式编码的可执行文件被称为地址无关可执行文件（PIE）</p>
+<h2 id="延迟绑定"><a href="#延迟绑定" class="headerlink" title="延迟绑定"></a>延迟绑定</h2><p>&emsp;&emsp;在动态链接下，程序模块之间包含了大量的函数调用，所以程序在开始执行前，动态链接会耗费不少时间用于解决模块之间的函数引用的符号查找和重定位，这会牺牲性能。而很多函数在实际运行中很少甚至不会用到，为了提高性能，ELF采用了一种叫做<strong>延迟绑定</strong>的机制。其基本思想就是程序在第一次被用到时才绑定（符号查找、重定位等）<br>&emsp;&emsp;ELF采用PLT（Procedure Linkage Table）的方法来实现。<br><img src="https://gateway.pinata.cloud/ipfs/bafkreif23cst3rfzw36mj7h3wptjifuvgztz4gx5ccjbvkenajvcrnjule" alt="plt"><br>如图，调用函数的方式在got表的基础上再加一层，先通过plt表查询函数在got表对应的项的地址，再通过got表进行间接寻址，如果是第一次调用函数，got表是没有函数地址的，需要plt表去绑定该函数（其中需要用到plt表中的前三个参数），之后got表就有对应函数的地址了。</p>
 ]]></content>
       <tags>
-        <tag>堆</tag>
+        <tag>动态链接</tag>
       </tags>
   </entry>
   <entry>
